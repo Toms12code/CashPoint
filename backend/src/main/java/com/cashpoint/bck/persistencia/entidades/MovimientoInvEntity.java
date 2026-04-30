@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @NoArgsConstructor
-public class MovimientoVentaEntity {
+public class MovimientoInvEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
