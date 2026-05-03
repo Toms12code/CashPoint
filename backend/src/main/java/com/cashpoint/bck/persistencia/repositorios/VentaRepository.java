@@ -1,6 +1,6 @@
-package com.cashpoint.back.persistencia.repositorios;
+package com.cashpoint.bck.persistencia.repositorios;
 
-import com.cashpoint.back.persistencia.entidades.VentaEntity;
+import com.cashpoint.bck.persistencia.entidades.VentaEntity;
 import com.cashpoint.back.persistencia.entidades.enums.EstadoVenta;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -10,3 +10,4 @@ public interface VentaRepository extends JpaRepository<VentaEntity, Long> {
 
     List<VentaEntity> findByEstado(EstadoVenta estado);
 }
+

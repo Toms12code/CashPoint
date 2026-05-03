@@ -1,4 +1,4 @@
-package com.cashpoint.back.persistencia.entidades.enums;
+package com.cashpoint.bck.persistencia.entidades.enums;
 
 public enum TipoMovimiento {
     ENTRADA,

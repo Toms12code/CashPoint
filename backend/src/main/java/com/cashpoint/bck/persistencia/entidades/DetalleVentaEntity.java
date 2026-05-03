@@ -1,4 +1,4 @@
-package com.cashpoint.back.persistencia.entidades;
+package com.cashpoint.bck.persistencia.entidades;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -30,4 +30,44 @@ public class DetalleVentaEntity {
 
     @Column(nullable = false)
     private Double precioUnitario;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public VentaEntity getVenta() {
+        return venta;
+    }
+
+    public void setVenta(VentaEntity venta) {
+        this.venta = venta;
+    }
+
+    public ProductoEntity getProducto() {
+        return producto;
+    }
+
+    public void setProducto(ProductoEntity producto) {
+        this.producto = producto;
+    }
+
+    public Integer getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(Integer cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public Double getPrecioUnitario() {
+        return precioUnitario;
+    }
+
+    public void setPrecioUnitario(Double precioUnitario) {
+        this.precioUnitario = precioUnitario;
+    }
 }

@@ -1,40 +1,23 @@
-package com.cashpoint.bck.persistencia.entidades;
+package com.cashpoint.bck.persistencia.dtos;
 
 import com.cashpoint.back.persistencia.entidades.enums.EstadoVenta;
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Table(name = "ventas")
 @Getter
 @Setter
 @NoArgsConstructor
-public class VentaEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+public class VentaResponseDTO {
     private Long id;
-
-    @Column(nullable = false)
     private LocalDateTime fecha;
-
-    @Column(nullable = false)
     private Double total;
-
-    @Enumerated(EnumType.STRING)
-    private EstadoVenta estado;
-
-    @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<DetalleVentaEntity> detalles = new ArrayList<>();
-
+    private com.cashpoint.back.persistencia.entidades.enums.EstadoVenta estado;
+    private List<DetalleVentaResponseDTO> detallesR = new ArrayList<DetalleVentaResponseDTO>();
 
     public Long getId() {
         return id;
@@ -68,11 +51,7 @@ public class VentaEntity {
         this.estado = estado;
     }
 
-    public List<DetalleVentaEntity> getDetalles() {
-        return detalles;
-    }
-
-    public void setDetalles(List<DetalleVentaEntity> detalles) {
-        this.detalles = detalles;
+    public void setDetalles(List<DetalleVentaResponseDTO> detallesR) {
+        this.detallesR = detallesR;
     }
 }

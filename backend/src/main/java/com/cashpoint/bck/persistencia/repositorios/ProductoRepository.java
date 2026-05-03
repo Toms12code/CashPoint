@@ -1,7 +1,7 @@
-package com.cashpoint.back.persistencia.repositorios;
+package com.cashpoint.bck.persistencia.repositorios;
 
-import com.cashpoint.back.persistencia.entidades.CategoriaEntity;
-import com.cashpoint.back.persistencia.entidades.ProductoEntity;
+import com.cashpoint.bck.persistencia.entidades.CategoriaEntity;
+import com.cashpoint.bck.persistencia.entidades.ProductoEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

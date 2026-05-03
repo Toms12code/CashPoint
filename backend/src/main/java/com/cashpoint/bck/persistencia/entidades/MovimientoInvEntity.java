@@ -1,6 +1,6 @@
-package com.cashpoint.back.persistencia.entidades;
+package com.cashpoint.bck.persistencia.entidades;
 
-import com.cashpoint.back.persistencia.entidades.enums.TipoMovimiento;
+import com.cashpoint.bck.persistencia.entidades.enums.TipoMovimiento;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,4 +34,52 @@ public class MovimientoInvEntity {
     private LocalDate fecha;
 
     private String motivo;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public ProductoEntity getProducto() {
+        return producto;
+    }
+
+    public void setProducto(ProductoEntity producto) {
+        this.producto = producto;
+    }
+
+    public TipoMovimiento getEstado() {
+        return estado;
+    }
+
+    public void setEstado(TipoMovimiento estado) {
+        this.estado = estado;
+    }
+
+    public Integer getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(Integer cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public LocalDate getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(LocalDate fecha) {
+        this.fecha = fecha;
+    }
+
+    public String getMotivo() {
+        return motivo;
+    }
+
+    public void setMotivo(String motivo) {
+        this.motivo = motivo;
+    }
 }

@@ -1,4 +1,4 @@
-package com.cashpoint.back.api;
+package com.cashpoint.bck.api;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,7 +10,7 @@ public class ProbandoController {
 
         @GetMapping
         public String probando() {
-            return "probando";
+            return "funciona?";
         }
 
 }

@@ -1,4 +1,4 @@
-package com.cashpoint.back.persistencia.dtos;
+package com.cashpoint.bck.persistencia.dtos;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,4 +11,12 @@ import java.util.List;
 @NoArgsConstructor
 public class VentaRequestDTO {
     private List<DetalleVentaRequestDTO> detalles;
+
+    public List<DetalleVentaRequestDTO> getDetalles() {
+        return detalles;
+    }
+
+    public void setDetalles(List<DetalleVentaRequestDTO> detalles) {
+        this.detalles = detalles;
+    }
 }

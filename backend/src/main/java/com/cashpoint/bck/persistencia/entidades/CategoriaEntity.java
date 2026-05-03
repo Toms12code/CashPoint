@@ -1,4 +1,4 @@
-package com.cashpoint.back.persistencia.entidades;
+package com.cashpoint.bck.persistencia.entidades;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -21,4 +21,29 @@ public class CategoriaEntity {
     private String nombre;
 
     private String descripcion;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
 }
+
