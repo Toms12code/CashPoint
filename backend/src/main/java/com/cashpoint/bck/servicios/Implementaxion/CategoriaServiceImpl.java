@@ -1,27 +1,30 @@
-package com.cashpoint.bck.servicios;
+package com.cashpoint.bck.servicios.Implementaxion;
 
+import com.cashpoint.bck.excepcione.NegocioException;
+import com.cashpoint.bck.excepcione.NoHayException;
 import com.cashpoint.bck.persistencia.dtos.CategoriaRequestDTO;
 import com.cashpoint.bck.persistencia.dtos.CategoriaResponseDTO;
 import com.cashpoint.bck.persistencia.entidades.CategoriaEntity;
 import com.cashpoint.bck.persistencia.repositorios.CategoriaRepository;
+import com.cashpoint.bck.servicios.CategoriaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service@RequiredArgsConstructor
-public class CategoriaServiceImp implements CategoriaService{
+@Service
+public class CategoriaServiceImpl implements CategoriaService {
 
     private final CategoriaRepository categoriaRepository;
 
-    public CategoriaServiceImp(CategoriaRepository categoriaRepository) {
+    public CategoriaServiceImpl(CategoriaRepository categoriaRepository) {
         this.categoriaRepository = categoriaRepository;
     }
 
     @Override
     public CategoriaResponseDTO crear(CategoriaRequestDTO request) {
         if (categoriaRepository.existsByNombre(request.getNombre())) {
-            throw new RuntimeException("La categoria ya existe :(");
+            throw new NegocioException("La categoria ya existe :(");
         }
         CategoriaEntity categoria = new CategoriaEntity();
         categoria.setNombre(request.getNombre());
@@ -51,7 +54,7 @@ public class CategoriaServiceImp implements CategoriaService{
     @Override
     public void eliminar(Long id) {
         if(!categoriaRepository.existsById(id)){
-            throw new RuntimeException("La categoria no existe :(");
+            throw new NoHayException("La categoria no existe :(");
         }
         categoriaRepository.deleteById(id);
     }

@@ -1,12 +1,14 @@
-package com.cashpoint.bck.servicios;
+package com.cashpoint.bck.servicios.Implementaxion;
 
 import com.cashpoint.back.persistencia.entidades.enums.EstadoVenta;
+import com.cashpoint.bck.excepcione.NoHayException;
 import com.cashpoint.bck.persistencia.dtos.*;
 import com.cashpoint.bck.persistencia.entidades.DetalleVentaEntity;
 import com.cashpoint.bck.persistencia.entidades.ProductoEntity;
 import com.cashpoint.bck.persistencia.entidades.VentaEntity;
 import com.cashpoint.bck.persistencia.repositorios.ProductoRepository;
 import com.cashpoint.bck.persistencia.repositorios.VentaRepository;
+import com.cashpoint.bck.servicios.VentaService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,8 +17,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
-public abstract class VentaServiceImpl implements VentaService {
+public class VentaServiceImpl implements VentaService {
 
     private final VentaRepository ventaRepository;
     private final ProductoRepository productoRepository;
@@ -36,9 +37,9 @@ public abstract class VentaServiceImpl implements VentaService {
         double total = 0.0;
         for (DetalleVentaRequestDTO item : request.getDetalles()) {
             ProductoEntity producto = productoRepository.findById(item.getProductoId())
-                    .orElseThrow(() -> new RuntimeException("Producto no existe :/"));
+                    .orElseThrow(() -> new NoHayException("Producto no existe :/"));
             if (producto.getStock() < item.getCantidad()) {
-                throw new RuntimeException("manito no queda " + producto.getNombre());
+                throw new NoHayException("manito no queda " + producto.getNombre());
             }
             producto.setStock(producto.getStock() - item.getCantidad());
             productoRepository.save(producto);
@@ -66,17 +67,21 @@ public abstract class VentaServiceImpl implements VentaService {
     public VentaResponseDTO obtenerPorId(Long id) {
         return ventaRepository.findById(id)
                 .map(this::mapToDTO)
-                .orElseThrow(() -> new RuntimeException("Venta no se encontro >:$"));
+                .orElseThrow(() -> new NoHayException("Venta no se encontro >:$"));
+    }
+
+    @Override
+    public void eliminar(Long id) {
     }
 
     @Transactional
     @Override
     public VentaResponseDTO anular(Long id) {
         VentaEntity venta = ventaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Venta no existe D:"));
+                .orElseThrow(() -> new NoHayException("Venta no existe D:"));
 
         if(venta.getEstado() == EstadoVenta.ANULADA) {
-            throw new RuntimeException("La venta is already anulada");
+            throw new NoHayException("La venta is already anulada");
         }
         for(DetalleVentaEntity detalle : venta.getDetalles()) {
             ProductoEntity producto = detalle.getProducto();

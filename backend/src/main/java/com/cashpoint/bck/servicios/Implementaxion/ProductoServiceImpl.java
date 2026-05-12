@@ -1,18 +1,19 @@
-package com.cashpoint.bck.servicios;
+package com.cashpoint.bck.servicios.Implementaxion;
 
+import com.cashpoint.bck.excepcione.NoHayException;
 import com.cashpoint.bck.persistencia.dtos.ProductoRequestDTO;
 import com.cashpoint.bck.persistencia.dtos.ProductoResponseDTO;
 import com.cashpoint.bck.persistencia.entidades.CategoriaEntity;
 import com.cashpoint.bck.persistencia.entidades.ProductoEntity;
 import com.cashpoint.bck.persistencia.repositorios.CategoriaRepository;
 import com.cashpoint.bck.persistencia.repositorios.ProductoRepository;
+import com.cashpoint.bck.servicios.ProductoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class ProductoServiceImpl implements ProductoService {
 
     private final ProductoRepository productoRepository;
@@ -26,7 +27,7 @@ public class ProductoServiceImpl implements ProductoService {
     @Override
     public ProductoResponseDTO crear(ProductoRequestDTO request) {
         CategoriaEntity categoria = categoriaRepository.findById(request.getCategoriaId())
-                .orElseThrow(() -> new RuntimeException("Categoria no existe :("));
+                .orElseThrow(() -> new NoHayException("Categoria no existe :("));
 
         ProductoEntity producto = new ProductoEntity();
         producto.setNombre(request.getNombre());
@@ -50,13 +51,13 @@ public class ProductoServiceImpl implements ProductoService {
     public ProductoResponseDTO obtenerPorId(Long id) {
         return productoRepository.findById(id)
                 .map(this::mapToDTO)
-                .orElseThrow(() -> new RuntimeException("Producto no existe ):"));
+                .orElseThrow(() -> new NoHayException("Producto no existe ):"));
     }
 
     @Override
     public ProductoResponseDTO actualizar(Long id, ProductoRequestDTO request) {
         ProductoEntity producto = productoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Producto no existe ):"));
+                .orElseThrow(() -> new NoHayException("Producto no existe ):"));
 
         producto.setNombre(request.getNombre());
         producto.setPrecio(request.getPrecio());
@@ -68,7 +69,7 @@ public class ProductoServiceImpl implements ProductoService {
     @Override
     public void eliminar(Long id) {
         if (!productoRepository.existsById(id)){
-              throw new RuntimeException("Producto no existe ):");
+              throw new NoHayException("Producto no existe ):");
     }
         productoRepository.deleteById(id);
     }

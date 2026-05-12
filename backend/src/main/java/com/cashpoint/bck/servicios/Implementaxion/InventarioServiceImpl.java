@@ -1,5 +1,6 @@
-package com.cashpoint.bck.servicios;
+package com.cashpoint.bck.servicios.Implementaxion;
 
+import com.cashpoint.bck.excepcione.NoHayException;
 import com.cashpoint.bck.persistencia.entidades.MovimientoInvEntity;
 import com.cashpoint.bck.persistencia.entidades.enums.*;
 import com.cashpoint.bck.persistencia.dtos.MovimientoInvRequestDTO;
@@ -7,6 +8,7 @@ import com.cashpoint.bck.persistencia.dtos.MovimientoInvResponseDTO;
 import com.cashpoint.bck.persistencia.entidades.ProductoEntity;
 import com.cashpoint.bck.persistencia.repositorios.MovimientoInvRepository;
 import com.cashpoint.bck.persistencia.repositorios.ProductoRepository;
+import com.cashpoint.bck.servicios.InventarioService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,8 +18,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
-public abstract class InventarioServiceImpl implements InventarioService {
+public class InventarioServiceImpl implements InventarioService {
 
     private final MovimientoInvRepository movimientoRepository;
     private final ProductoRepository productoRepository;
@@ -31,7 +32,7 @@ public abstract class InventarioServiceImpl implements InventarioService {
     @Override
     public MovimientoInvResponseDTO registrarEntrada(MovimientoInvRequestDTO request) {
         ProductoEntity producto = productoRepository.findById(request.getProductoId())
-                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+                .orElseThrow(() -> new NoHayException("Producto no encontrado"));
 
         producto.setStock(producto.getStock() + request.getCantidad());
         productoRepository.save(producto);
@@ -43,7 +44,7 @@ public abstract class InventarioServiceImpl implements InventarioService {
     @Transactional
     public MovimientoInvResponseDTO registrarSalida(MovimientoInvRequestDTO request) {
         ProductoEntity producto = productoRepository.findById(request.getProductoId())
-                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+                .orElseThrow(() -> new NoHayException("Producto no encontrado"));
 
         if (producto.getStock() < request.getCantidad()) {
             throw new RuntimeException("Stock insuficiente");
@@ -65,7 +66,7 @@ public abstract class InventarioServiceImpl implements InventarioService {
     @Override
     public Integer stockActual(Long productoId) {
         ProductoEntity producto = productoRepository.findById(productoId)
-                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+                .orElseThrow(() -> new NoHayException("Producto no encontrado"));
         return producto.getStock();
     }
 
