@@ -1,13 +1,14 @@
-import { useState, useEffect } from  "react";
+import { useState, useEffect } from "react";
 import api from "../api/axios";
 
 function Ventas() {
 
     const [ventas, setVentas] = useState([]);
+    const [productos, setProductos] = useState([]);
+    const [detalles, setDetalles] = useState([]);
     const [productoId, setProductoId] = useState('');
     const [cantidad, setCantidad] = useState('');
     const [error, setError] = useState('');
-
 
     useEffect(() => {
         cargarVentas();
@@ -16,76 +17,82 @@ function Ventas() {
 
     const cargarVentas = () => {
         api.get('/ventas')
-    .then(response => setVentas(response.data))
-.catch(() => setError('Error al cargar ventas'));
+            .then(response => setVentas(response.data))
+            .catch(() => setError('Error al cargar ventas'));
     };
 
     const cargarProductos = () => {
         api.get('/productos')
-        .then(response => setProductos(response.data))
-        .catch(() => setError('Error al cargar productos'));
+            .then(response => setProductos(response.data))
+            .catch(() => setError('Error al cargar productos'));
     };
 
-    const agrearDetalle = () => {
-        if(!productoId || !cantidad) {
-            setError('Tienes que llenar todos los campos, pero no de futbol');
+    const agregarDetalle = () => {
+        if (!productoId || !cantidad) {
+            setError('Selecciona un producto y cantidad');
+            return;
         }
-        return;
-    }
 
-    const producto = productos.findd(p=> p.od === parseInt(productoId));
+        const producto = productos.find(p => p.id === parseInt(productoId));
 
-    const yaExiste =  detalles.find(d => d.productoId === parseInt(productoId));
+        const yaExiste = detalles.find(d => d.productoId === parseInt(productoId));
+        if (yaExiste) {
+            setError('Ese producto ya está en la venta');
+            return;
+        }
 
-    if(yaExiste) {
-        setError('Ya agregaste este producto, no sea avaricioso');
-        return;
-    }
+        setDetalles([...detalles, {
+            productoId: parseInt(productoId),
+            cantidad: parseInt(cantidad),
+            productoNombre: producto.nombre,
+            precioUnitario: producto.precio
+        }]);
 
-    setDetalles([...detalles, { productoId: parseInt(productoId), cantidad: parseInt(cantidad), nombre: producto.nombre }]);
-    setProductoId('');
-    setCantidad('');
-    setError('');
-};
-
-
-const quitarDetalle = (productoId) => {
-    setDetalles(detalles.filter(d => d.productoId !== productioId));
-
-};
-
-const crearVenta = () => {
-    if(detalles.length === 0) {
-        setError('Agrega al menos un producto a la venta, no seas rata');
-    return;
-    }
-
-    api.post('/ventas', { detalles : detalles.map(d => ({
-        productoId: d.productoId,
-        cantidad: d.cantidad
-    }))
-    })
-    .then(() => {
-        setDetalles([]);
+        setProductoId('');
+        setCantidad('');
         setError('');
-        cargarVentas();
-    })
+    };
 
-    .catch(() => setError('Hubo un error al crear venta')); 
+    const quitarDetalle = (id) => {
+        setDetalles(detalles.filter(d => d.productoId !== id));
+    };
 
-};
+    const crearVenta = () => {
+        if (detalles.length === 0) {
+            setError('Agrega al menos un producto');
+            return;
+        }
 
-const calcularTotal = () => {
-    return detalles.reduce((acc,d) => acc + (d.precioUnitario * d.cantidad), 0);
-};
-   
+        api.post('/ventas', {
+            detalles: detalles.map(d => ({
+                productoId: d.productoId,
+                cantidad: d.cantidad
+            }))
+        })
+            .then(() => {
+                setDetalles([]);
+                setError('');
+                cargarVentas();
+            })
+            .catch(() => setError('Error al crear venta'));
+    };
+
+    const anularVenta = (id) => {
+        api.put(`/ventas/${id}/anular`)
+            .then(() => cargarVentas())
+            .catch(() => setError('Error al anular venta'));
+    };
+
+    const calcularTotal = () => {
+        return detalles.reduce((acc, d) => acc + (d.precioUnitario * d.cantidad), 0);
+    };
+
     return (
-         <div>
+        <div>
             <h1>Ventas</h1>
 
             {error && <p style={{ color: 'red' }}>{error}</p>}
 
-            {/* Agregar productos a la venta */}
             <div style={{ marginBottom: '10px' }}>
                 <select
                     value={productoId}
@@ -111,7 +118,6 @@ const calcularTotal = () => {
                 </button>
             </div>
 
-            {/* Detalles de la venta actual */}
             {detalles.length > 0 && (
                 <div style={{ marginBottom: '20px', border: '1px solid #ddd', padding: '15px', borderRadius: '4px' }}>
                     <h3>Venta actual</h3>
@@ -133,10 +139,7 @@ const calcularTotal = () => {
                                     <td style={tdStyle}>${d.precioUnitario}</td>
                                     <td style={tdStyle}>${d.precioUnitario * d.cantidad}</td>
                                     <td style={tdStyle}>
-                                        <button
-                                            onClick={() => quitarDetalle(d.productoId)}
-                                            style={deleteButtonStyle}
-                                        >
+                                        <button onClick={() => quitarDetalle(d.productoId)} style={deleteButtonStyle}>
                                             Quitar
                                         </button>
                                     </td>
@@ -151,7 +154,6 @@ const calcularTotal = () => {
                 </div>
             )}
 
-            {/* Historial de ventas */}
             <h2>Historial</h2>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead>
@@ -172,10 +174,7 @@ const calcularTotal = () => {
                             <td style={tdStyle}>{v.estado}</td>
                             <td style={tdStyle}>
                                 {v.estado === 'ACTIVA' && (
-                                    <button
-                                        onClick={() => anularVenta(v.id)}
-                                        style={deleteButtonStyle}
-                                    >
+                                    <button onClick={() => anularVenta(v.id)} style={deleteButtonStyle}>
                                         Anular
                                     </button>
                                 )}
@@ -186,7 +185,7 @@ const calcularTotal = () => {
             </table>
         </div>
     );
-
+}
 
 const inputStyle = {
     padding: '8px',
@@ -214,6 +213,3 @@ const thStyle = { padding: '10px', textAlign: 'left' };
 const tdStyle = { padding: '10px' };
 
 export default Ventas;
-    
-    
-
