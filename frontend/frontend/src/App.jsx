@@ -4,17 +4,19 @@ import Categorias from './paginas/Categorias';
 import Inventarios from './paginas/Inventarios';
 import Productos from './paginas/Productos';
 import Ventas from './paginas/Ventas';
+import Dashboard from './paginas/Dashboard';
 
 function App() {
   return (
     <BrowserRouter>
       <Navbar />
-      <div style={{ padding: '20px' }}>
+      <div >
         <Routes>
           <Route path="/categorias" element={<Categorias />} />
           <Route path="/inventario" element={<Inventarios />} />
           <Route path="/producto" element={<Productos />} />
           <Route path="/ventas" element={<Ventas />} />
+          <Route path="/" element={<Dashboard />} />
         </Routes>
       </div>
     </BrowserRouter>

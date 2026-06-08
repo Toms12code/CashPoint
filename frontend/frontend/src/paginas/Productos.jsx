@@ -10,6 +10,7 @@ function Productos() {
     const [stock, setStock] = useState('');
     const [categoriaId, setCategoriaId] = useState('');
     const [error, setError] = useState('');
+    const [confirmarId, setConfirmarId] = useState(null);
 
     useEffect(() => {
         cargarProductos();
@@ -31,6 +32,16 @@ function Productos() {
     const crearProducto = () => {
         if (!nombre.trim() || !precio || !stock || !categoriaId) {
             setError('Todos los campos son obligatorios');
+            return;
+        }
+        
+        if(parseFloat(precio) < 50) {
+            setError('El precio debe ser mayor o igual a $50');
+            return;
+        }
+
+        if(parseInt(stock) < 1) {
+            setError('El stock debe ser un número positivo');
             return;
         }
 
@@ -73,6 +84,7 @@ function Productos() {
                 <input
                     placeholder="Precio"
                     type="number"
+                    min="50"
                     value={precio}
                     onChange={e => setPrecio(e.target.value)}
                     style={inputStyle}
@@ -80,6 +92,7 @@ function Productos() {
                 <input
                     placeholder="Stock"
                     type="number"
+                    min="1"
                     value={stock}
                     onChange={e => setStock(e.target.value)}
                     style={inputStyle}
@@ -120,12 +133,37 @@ function Productos() {
                             <td style={tdStyle}>{p.stock}</td>
                             <td style={tdStyle}>{p.categoriaNombre}</td>
                             <td style={tdStyle}>
-                                <button
-                                    onClick={() => eliminarProducto(p.id)}
-                                    style={deleteButtonStyle}
-                                >
-                                    Eliminar
-                                </button>
+                            <td style={tdStyle}>
+                                    {confirmarId === p.id ? (
+                    <>
+            <span style={{ fontSize: '13px', marginRight: '8px', color: '#000000' }}>
+                ¿Seguro?
+            </span>
+            <button
+                onClick={() => {
+                    eliminarProducto(p.id);
+                    setConfirmarId(null);
+                }}
+                style={{ ...deleteButtonStyle, marginRight: '6px' }}
+            >
+                Sí
+            </button>
+            <button
+                onClick={() => setConfirmarId(null)}
+                style={{ ...buttonStyle, backgroundColor: '#2e2e5e' }}
+            >
+                No
+            </button>
+        </>
+    ) : (
+        <button
+            onClick={() => setConfirmarId(p.id)}
+            style={deleteButtonStyle}
+        >
+            Eliminar
+        </button>
+    )}
+</td>
                             </td>
                         </tr>
                     ))}

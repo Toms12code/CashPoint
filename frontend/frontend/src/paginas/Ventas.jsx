@@ -33,6 +33,11 @@ function Ventas() {
             return;
         }
 
+        if(parseInt(cantidad) <= 0) {
+            setError('La cantidad debe ser mayor a cero');
+            return;
+        }
+
         const producto = productos.find(p => p.id === parseInt(productoId));
 
         const yaExiste = detalles.find(d => d.productoId === parseInt(productoId));
@@ -109,6 +114,7 @@ function Ventas() {
                 <input
                     placeholder="Cantidad"
                     type="number"
+                    min="1"
                     value={cantidad}
                     onChange={e => setCantidad(e.target.value)}
                     style={inputStyle}
