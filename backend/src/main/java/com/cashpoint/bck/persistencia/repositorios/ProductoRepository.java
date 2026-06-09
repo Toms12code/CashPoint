@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ProductoRepository extends JpaRepository<ProductoEntity, Long> {
 
-    List<ProductoEntity> findByCategoriaId(Long categoriaId);
+    List<ProductoEntity> findByActivoTrue();
 
     boolean existsByNombre(String nombre);
 }

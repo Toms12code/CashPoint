@@ -1,4 +1,4 @@
-package com.cashpoint.bck.api;
+package com.cashpoint.bck;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

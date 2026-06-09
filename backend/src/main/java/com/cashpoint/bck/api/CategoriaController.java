@@ -29,7 +29,7 @@ public class CategoriaController {
             return ResponseEntity.ok(categoriaService.listar());
         }
 
-        @DeleteMapping("{id}")
+        @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         categoriaService.eliminar(id);
         return ResponseEntity.noContent().build();

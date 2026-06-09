@@ -34,7 +34,7 @@ public class VentaController {
         return ResponseEntity.ok(ventaService.obtenerPorId(id));
     }
 
-    @PutMapping("{/id}/anular")
+    @PutMapping("/{id}/anular")
     public ResponseEntity<VentaResponseDTO> anular(@PathVariable Long id) {
         return ResponseEntity.ok(ventaService.anular(id));
     }

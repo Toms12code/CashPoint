@@ -4,7 +4,9 @@ import com.cashpoint.bck.persistencia.dtos.VentaRequestDTO;
 import com.cashpoint.bck.persistencia.dtos.VentaResponseDTO;
 import jakarta.transaction.Transactional;
 
+
 import java.util.List;
+
 public interface VentaService {
     VentaResponseDTO crear(VentaRequestDTO request);
     List<VentaResponseDTO> listar();

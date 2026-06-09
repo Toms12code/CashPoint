@@ -125,12 +125,13 @@ public class ProductoServiceImplTest {
     }
 
     @Test
-    void eliminar_deberiaEliminar_cuandoExiste() {
-        when(productoRepository.existsById(1L)).thenReturn(true);
+    void eliminar_deberiaDesactivar_cuandoExiste() {
+        when(productoRepository.findById(1L)).thenReturn(Optional.of(productoFake));
 
         productoService.eliminar(1L);
 
         verify(productoRepository).deleteById(1L);
+        assertFalse(productoFake.getActivo());
     }
 
     @Test

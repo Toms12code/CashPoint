@@ -21,12 +21,12 @@ public class InventarioController {
         this.inventarioService = inventarioService;
     }
 
-    @PostMapping
+    @PostMapping("/entrada")
     public ResponseEntity<MovimientoInvResponseDTO> entrada(@RequestBody MovimientoInvRequestDTO request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(inventarioService.registrarEntrada(request));
     }
 
-    @PostMapping
+    @PostMapping("/salida")
     public ResponseEntity<MovimientoInvResponseDTO> salida(@RequestBody MovimientoInvRequestDTO request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(inventarioService.registrarSalida(request));
     }

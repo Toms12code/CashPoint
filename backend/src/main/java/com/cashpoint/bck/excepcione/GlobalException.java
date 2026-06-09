@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-public class GlobalException {
+public class GlobalException extends RuntimeException{
 
     @ExceptionHandler(NoHayException.class)
     public ResponseEntity<ErrorDelResponseDTO> handlerNoHay(NoHayException ex) {

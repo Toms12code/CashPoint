@@ -10,7 +10,6 @@ import com.cashpoint.bck.persistencia.repositorios.ProductoRepository;
 import com.cashpoint.bck.persistencia.repositorios.VentaRepository;
 import com.cashpoint.bck.servicios.VentaService;
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;

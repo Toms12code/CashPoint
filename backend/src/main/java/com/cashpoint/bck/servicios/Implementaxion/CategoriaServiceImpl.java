@@ -7,7 +7,6 @@ import com.cashpoint.bck.persistencia.dtos.CategoriaResponseDTO;
 import com.cashpoint.bck.persistencia.entidades.CategoriaEntity;
 import com.cashpoint.bck.persistencia.repositorios.CategoriaRepository;
 import com.cashpoint.bck.servicios.CategoriaService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,7 +27,7 @@ public class CategoriaServiceImpl implements CategoriaService {
         }
         CategoriaEntity categoria = new CategoriaEntity();
         categoria.setNombre(request.getNombre());
-        categoria.setDescripcion(request.getNombre());
+        categoria.setDescripcion(request.getDescripcion());
 
         CategoriaEntity guardada = categoriaRepository.save(categoria);
 

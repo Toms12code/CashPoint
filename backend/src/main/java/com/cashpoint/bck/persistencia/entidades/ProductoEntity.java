@@ -31,6 +31,17 @@ public class ProductoEntity {
     @JoinColumn(name = "categoria_id", nullable = false)
     private CategoriaEntity categoria;
 
+    @Column()
+    private Boolean activo = true;
+
+    public boolean getActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }
+
     public Long getId() {
         return id;
     }

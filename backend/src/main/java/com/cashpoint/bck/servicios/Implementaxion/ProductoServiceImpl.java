@@ -8,7 +8,6 @@ import com.cashpoint.bck.persistencia.entidades.ProductoEntity;
 import com.cashpoint.bck.persistencia.repositorios.CategoriaRepository;
 import com.cashpoint.bck.persistencia.repositorios.ProductoRepository;
 import com.cashpoint.bck.servicios.ProductoService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,6 +33,7 @@ public class ProductoServiceImpl implements ProductoService {
         producto.setPrecio(request.getPrecio());
         producto.setStock(request.getStock());
         producto.setCategoria(categoria);
+        producto.setActivo(true);
 
         return mapToDTO(productoRepository.save(producto));
 
@@ -42,7 +42,7 @@ public class ProductoServiceImpl implements ProductoService {
 
     @Override
     public List<ProductoResponseDTO> listar() {
-        return productoRepository.findAll().stream()
+        return productoRepository.findByActivoTrue().stream()
                 .map(this::mapToDTO)
                 .toList();
     }
@@ -68,10 +68,11 @@ public class ProductoServiceImpl implements ProductoService {
 
     @Override
     public void eliminar(Long id) {
-        if (!productoRepository.existsById(id)){
-              throw new NoHayException("Producto no existe ):");
-    }
-        productoRepository.deleteById(id);
+        ProductoEntity producto = productoRepository.findById(id)
+                .orElseThrow(() -> new NoHayException("Producto no existe ):"));
+
+        producto.setActivo(false);
+        productoRepository.save(producto);
     }
 
     private ProductoResponseDTO mapToDTO(ProductoEntity p) {
