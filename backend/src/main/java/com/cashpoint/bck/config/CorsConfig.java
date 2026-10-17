@@ -15,7 +15,7 @@ public class CorsConfig {
                 @Override
                 public void addCorsMappings(CorsRegistry registry) {
                     registry.addMapping("/api/**")
-                            .allowedOrigins("http://localhost:5173", "http://localhost:5175", " \"https://cashpoint-production.up.railway.app\"")
+                            .allowedOrigins("http://localhost:5173", "http://localhost:5175", "https://cashpoint-production.up.railway.app", "https://cashpoint-xi.vercel.app/")
                             .allowedMethods("GET", "POST", "PUT", "DELETE")
                             .allowedHeaders("*");
                 }
